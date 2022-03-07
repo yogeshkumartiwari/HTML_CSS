@@ -1,0 +1,197 @@
+                                             assignment-02
+name-yogesh kumar
+roll-204ca055
+date-14/06/2021
+
+c++ program :-
+1. Newton's Forward Interpolation Method
+
+2. Newton's Backward Interpolation Method
+
+3. Gauss's Forward Interpolation Method
+
+4. Gauss's Backward Interpolation Method
+
+5. Lagrange's Interpolation Method
+
+#include <bits/stdc++.h>
+using namespace std;
+struct Data
+{
+    float x, y;
+};
+float u_calf(float u, int n)
+{
+    float temp = u;
+    for (int i = 1; i < n; i++)
+        temp = temp * (u - i);
+    return temp;
+}
+float u_calb(float u, int n)
+{
+    float temp = u;
+    for (int i = 1; i < n; i++)
+        temp = temp * (u + i);
+    return temp;
+}
+int fact(int n)
+{
+    int f = 1;
+    for (int i = 2; i <= n; i++)
+        f *= i;
+    return f;
+}
+
+float newton_forward(float x[],float y[20][20],int n,float value)
+{
+    for (int i = 1; i < n; i++) {
+        for (int j = 0; j < n - i; j++)
+            y[j][i] = y[j + 1][i - 1] - y[j][i - 1];
+    }
+    float sum = y[0][0];
+    float u = (value - x[0]) / (x[1] - x[0]);
+    for (int i = 1; i < n; i++) {
+        sum = sum + (u_calf(u, i) * y[0][i]) /
+                                 fact(i);
+    }
+
+    return sum;
+}
+float newton_backward(float x[],float y[20][20],int n,float value)
+{
+       for (int i = 1; i < n; i++) {
+        for (int j = n - 1; j >= i; j--)
+            y[j][i] = y[j][i - 1] - y[j - 1][i - 1];
+    }
+    float sum = y[n - 1][0];
+    float u = (value - x[n - 1]) / (x[1] - x[0]);
+    for (int i = 1; i < n; i++) {
+        sum = sum + (u_calb(u, i) * y[n - 1][i]) /
+                                     fact(i);
+    }
+         return sum;
+}
+
+// n represents the number of known data points
+double interpolate(Data f[], int xi, int n)
+{
+    double result = 0; // Initialize result
+
+    for (int i=0; i<n; i++)
+    {
+        // Compute individual terms of above formula
+        double term = f[i].y;
+        for (int j=0;j<n;j++)
+        {
+            if (j!=i)
+                term = term*(xi - f[j].x)/double(f[i].x - f[j].x);
+        }
+
+        // Add current term to result
+        result += term;
+    }
+
+    return result;
+}
+float gauss_forward(float x[],float y[20][20],int n,float value)
+{
+
+    float z[20][20];
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            z[i][j]=y[i][j];
+        }
+    }
+    for(int i=0;i<n;i++)
+  for (int i = 1; i < n; i++) {
+        for (int j = 0; j < n - i; j++)
+            y[j][i] = y[j + 1][i - 1] - y[j][i - 1];
+    }
+    float sum = y[0][0];
+    float u = (value - x[0]) / (x[1] - x[0]);
+    for (int i = 1; i < n; i++) {
+        sum = sum + (u_calf(u, i) * y[0][i]) /
+                                 fact(i);
+    }
+
+    return sum;
+}
+float gauss_backward(float x[],float y[20][20],int n,float value)
+{
+           for (int i = 1; i < n; i++) {
+        for (int j = n - 1; j >= i; j--)
+            y[j][i] = y[j][i - 1] - y[j - 1][i - 1];
+    }
+    float sum = y[n - 1][0];
+    float u = (value - x[n - 1]) / (x[1] - x[0]);
+    for (int i = 1; i < n; i++) {
+        sum = sum + (u_calb(u, i) * y[n - 1][i]) /
+                                     fact(i);
+    }
+         return sum;
+}
+int main()
+{
+    int n;
+    float x[20];
+
+    cout<<"enter value of n= ";
+    cin>>n;
+    float y[20][20];
+    for(int i=0;i<n;i++)
+    {
+        cout<<"enter value of x"<<i+1<<" =";
+       cin>>x[i];
+       cout<<"enter value of y("<<x[i]<<") =";
+       cin>>y[i][0];
+    }
+    Data f[20];
+    for(int i=0;i<n;i++)
+    {
+        f[i].y=y[i][0];
+        f[i].x=x[i];
+    }
+     float value;
+     cout<<"enter value of x =";
+     cin>>value;
+     cout<<"newton forward\n";
+    cout<<"value of f("<<value<<") = "<<newton_forward(x,y,n,value)<<endl<<endl;
+    cout<<"newton backward\n";
+    cout<<"value of f("<<value<<") = "<<newton_backward(x,y,n,value)<<endl<<endl;
+    cout<<"lagranges interpolation\n";
+    cout <<"value of f("<<value<<") = "<< interpolate(f, value, n+1)<<endl<<endl;
+    cout<<"gauss's forward interpolation\n";
+    cout<<"value of f("<<value<<")="<<gauss_forward(x,y,n,value)<<endl<<endl;
+    cout<<"gauss's backward interpolation\n";
+    cout<<"value of f("<<value<<")="<<gauss_backward(x,y,n,value)<<endl<<endl;
+
+    return 0;
+}
+output:-
+enter value of x1 =3
+enter value of y(3) =4.028
+enter value of x2 =5
+enter value of y(5) =6.347
+enter value of x3 =7
+enter value of y(7) =8.931
+enter value of x4 =9
+enter value of y(9) =11.001
+enter value of x5 =11
+enter value of y(11) =12.374
+enter value of x =8
+newton forward
+value of f(8) = 10.0557
+
+newton backward
+value of f(8) = 10.0557
+
+lagranges interpolation
+value of f(8) = 10.6117 or -1.06117e+07 both are equal
+
+gauss's forward interpolation
+value of f(8)=10.0557
+
+gauss's backward interpolation
+value of f(8)=10.0557
