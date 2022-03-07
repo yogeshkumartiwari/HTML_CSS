@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <script>
+        function myFunction() {
+          document.getElementById("val1").innerHTML = "Paragraph changed.";
+          document.write(5+6);
+        }
+        </script>
+    <style>
+    body{
+     background-color: blueviolet;
+    }
+    </style>
+</head>
+<body>
+    <center style="font-size: 300%;"><h style="color:coral"><b>CALCULATOR</b></h></center>
+    <br>
+    <br>
+    
+    <form>
+       <p > enter number : <input type="text" id="val1" name="val1"></p>
+       <p > enter operator : <input type="text" id="op" name="op"></p>
+       <p > enter number : <input type="text" id="val2" name="val2"></p>
+       <button type="button"  value="value" onclick=" ">answer</button>
+       </form>
+      <script>
+          let x=val1;
+          let y=val2;
+          let text = document.getElementById("val1").innerText;
+    document.write(text);
+    
+    </script>
+
+</body>
+</html>
